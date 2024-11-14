@@ -1,7 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
-import {History, SocialScience, ComputerSecurity} from './schema.js'
+import {History, SocialScience, ComputerSecurity} from '../schema.js'
 import 'dotenv/config'
 import OpenAI from "openai";
 
@@ -205,3 +205,7 @@ app.get('/', (req, res)=>{
 app.listen(PORT, ()=>{
     console.log("Server is running")
 })
+
+
+
+module.exports = app;

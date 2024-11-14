@@ -43,6 +43,7 @@ app.get('/history', async(req,res)=>{
         const num= questions.length
         let avgResponseTime=0;
         let minResponseTime=Number.MAX_VALUE;
+        let maxResponseTime=0;
         let totalResponseTime=0;
         for(const question of questions){
             const id= question.id
@@ -51,19 +52,23 @@ app.get('/history', async(req,res)=>{
             const endTime = Date.now()
             const responseTime = endTime - startTime;
             minResponseTime= Math.min(minResponseTime, responseTime)
+            maxResponseTime= Math.max(maxResponseTime, responseTime)
             totalResponseTime+= responseTime
 
             if(response){
                 await History.findByIdAndUpdate(id, {response: response})
             }else {
-                console.log(`Failed to get an answer for: ${question.question}`);
+                res.status(500).json({ error: `Failed to get an answer for:${question.question}。` });
             }
         }
         avgResponseTime= totalResponseTime/num
-        console.log("avg:",avgResponseTime, ' min:',minResponseTime,)
-        res.send("Done")
+        res.json({
+            avg: avgResponseTime,
+            min: minResponseTime,
+            max: maxResponseTime
+        });
     }catch(error){
-        console.error('Error fetching entries:', error);
+        res.status(500).json({ error: `Something went wrong:${error}` });
     }
 })
 
@@ -73,6 +78,7 @@ app.get('/social-science', async(req,res)=>{
         const num= questions.length
         let avgResponseTime=0;
         let minResponseTime=Number.MAX_VALUE;
+        let maxResponseTime=0;
         let totalResponseTime=0;
         for(const question of questions){
             const id= question.id
@@ -81,19 +87,23 @@ app.get('/social-science', async(req,res)=>{
             const endTime = Date.now()
             const responseTime = endTime - startTime;
             minResponseTime= Math.min(minResponseTime, responseTime)
+            maxResponseTime= Math.max(maxResponseTime, responseTime)
             totalResponseTime+= responseTime
 
             if(response){
                 await SocialScience.findByIdAndUpdate(id, {response: response})
             }else {
-                console.log(`Failed to get an answer for: ${question.question}`);
+                res.status(500).json({ error: `Failed to get an answer for:${question.question}。` });
             }
         }
         avgResponseTime= totalResponseTime/num
-        console.log("avg:",avgResponseTime, ' min:',minResponseTime,)
-        res.send("Done")
+        res.json({
+            avg: avgResponseTime,
+            min: minResponseTime,
+            max: maxResponseTime
+        });
     }catch(error){
-        console.error('Error fetching entries:', error);
+        res.status(500).json({ error: `Something went wrong:${error}` });
     }
 })
 
@@ -104,6 +114,7 @@ app.get('/computer-security', async(req,res)=>{
         const num= questions.length
         let avgResponseTime=0;
         let minResponseTime=Number.MAX_VALUE;
+        let maxResponseTime=0;
         let totalResponseTime=0;
         for(const question of questions){
             const id= question.id
@@ -112,62 +123,78 @@ app.get('/computer-security', async(req,res)=>{
             const endTime = Date.now()
             const responseTime = endTime - startTime;
             minResponseTime= Math.min(minResponseTime, responseTime)
+            maxResponseTime= Math.max(maxResponseTime, responseTime)
             totalResponseTime+= responseTime
 
             if(response){
                 await ComputerSecurity.findByIdAndUpdate(id, {response: response})
             }else {
-                console.log(`Failed to get an answer for: ${question.question}`);
+                res.status(500).json({ error: `Failed to get an answer for:${question.question}。` });
             }
         }
         avgResponseTime= totalResponseTime/num
-        console.log("avg:",avgResponseTime, ' min:',minResponseTime,)
-        res.send("Done")
+        res.json({
+            avg: avgResponseTime,
+            min: minResponseTime,
+            max: maxResponseTime
+        });
     }catch(error){
-        console.error('Error fetching entries:', error);
+        res.status(500).json({ error: `Something went wrong:${error}` });
     }
 })
 
 app.get('/history-accuracy', async(req,res)=>{
-    const questions= await History.find()
-    let accuracyNum=0
-    for(const question of questions){
-        const anticipatedAnswer= question.anticipatedAnswer
-        const response= question.response
-        if(anticipatedAnswer== response){
-            accuracyNum+=1
+    try {
+        const questions= await History.find()
+        let accuracyNum=0
+        for(const question of questions){
+            const anticipatedAnswer= question.anticipatedAnswer
+            const response= question.response
+            if(anticipatedAnswer== response){
+                accuracyNum+=1
+            }
         }
+        const accuracyRate= accuracyNum/questions.length
+        res.json({ historyAccuracy: accuracyRate }); 
+    } catch (error) {
+        res.status(500).json({ error: `Something went wrong:${error}` });
     }
-    const msg= "the accracy rate is: "+ accuracyNum/questions.length
-    res.send(msg) //0.75
 })
 
 app.get('/social-accuracy', async(req,res)=>{
-    const questions= await SocialScience.find()
-    let accuracyNum=0
-    for(const question of questions){
-        const anticipatedAnswer= question.anticipatedAnswer
-        const response= question.response
-        if(anticipatedAnswer== response){
-            accuracyNum+=1
+    try {
+        const questions= await SocialScience.find()
+        let accuracyNum=0
+        for(const question of questions){
+            const anticipatedAnswer= question.anticipatedAnswer
+            const response= question.response
+            if(anticipatedAnswer== response){
+                accuracyNum+=1
+            }
         }
+        const accuracyRate= accuracyNum/questions.length
+        res.json({ socialAccuracy: accuracyRate }); 
+    } catch (error) {
+        res.status(500).json({ error: `Something went wrong:${error}` });
     }
-    const msg= "the accracy rate is: "+ accuracyNum/questions.length
-    res.send(msg) // 0.8
 })
 
 app.get('/computer-accuracy', async(req,res)=>{
-    const questions= await ComputerSecurity.find()
-    let accuracyNum=0
-    for(const question of questions){
-        const anticipatedAnswer= question.anticipatedAnswer
-        const response= question.response
-        if(anticipatedAnswer== response){
-            accuracyNum+=1
+    try {
+        const questions= await ComputerSecurity.find()
+        let accuracyNum=0
+        for(const question of questions){
+            const anticipatedAnswer= question.anticipatedAnswer
+            const response= question.response
+            if(anticipatedAnswer== response){
+                accuracyNum+=1
+            }
         }
+        const accuracyRate= accuracyNum/questions.length
+        res.json({ computerAccuracy: accuracyRate }); 
+    } catch (error) {
+        res.status(500).json({ error: `Something went wrong:${error}` });
     }
-    const msg= "the accracy rate is: "+ accuracyNum/questions.length
-    res.send(msg) // 0.783
 })
 
 app.get('/', (req, res)=>{

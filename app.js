@@ -201,7 +201,3 @@ app.get('/', (req, res)=>{
     res.send('hello world')
 })
 
-
-export default function handler(req, res) {
-    app(req, res);
-}

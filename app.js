@@ -1,7 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
-import {History, SocialScience, ComputerSecurity} from '../schema.js'
+import {History, SocialScience, ComputerSecurity} from './schema.js'
 import 'dotenv/config'
 import OpenAI from "openai";
 

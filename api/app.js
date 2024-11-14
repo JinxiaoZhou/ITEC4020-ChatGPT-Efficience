@@ -202,4 +202,6 @@ app.get('/', (req, res)=>{
 })
 
 
-export default app;
+export default function handler(req, res) {
+    app(req, res);
+}

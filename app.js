@@ -40,7 +40,7 @@ const getOpenAIResponse=async(question)=>{
 app.get('/history', async(req,res)=>{
     try{
         const randomQuestions= await History.aggregate([{ $sample: { size: 5 } }]);
-        const num= questions.length
+        const num= randomQuestions.length
         let avgResponseTime=0;
         let minResponseTime=Number.MAX_VALUE;
         let maxResponseTime=0;
@@ -76,7 +76,7 @@ app.get('/history', async(req,res)=>{
 app.get('/social-science', async(req,res)=>{
     try{
         const randomQuestions= await SocialScience.aggregate([{ $sample: { size: 5 } }]);
-        const num= questions.length
+        const num= randomQuestions.length
         let avgResponseTime=0;
         let minResponseTime=Number.MAX_VALUE;
         let maxResponseTime=0;
@@ -113,7 +113,7 @@ app.get('/social-science', async(req,res)=>{
 app.get('/computer-security', async(req,res)=>{
     try{
         const randomQuestions= await ComputerSecurity.aggregate([{ $sample: { size: 5 } }]);
-        const num= questions.length
+        const num= randomQuestions.length
         let avgResponseTime=0;
         let minResponseTime=Number.MAX_VALUE;
         let maxResponseTime=0;

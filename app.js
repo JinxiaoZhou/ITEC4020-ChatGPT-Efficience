@@ -9,6 +9,8 @@ import OpenAI from "openai";
 
 const app= express()
 app.use(cors());
+app.use(express.json());
+
 const PORT = process.env.PORT || 3000;
 const mongoDBURI =  process.env.MONGODB_URI;
 const openai = new OpenAI({apiKey:process.env.OPENAI_API_SECRET_KEY});
@@ -154,7 +156,7 @@ app.post('/history-accuracy', async(req,res)=>{
         }
         let accuracyNum=0
         for(const questionId of questionIds){
-            const question= History.findById(questionId)
+            const question= await History.findById(questionId)
             const anticipatedAnswer= question.anticipatedAnswer
             const response= question.response
             if(anticipatedAnswer== response){
@@ -176,7 +178,7 @@ app.post('/social-accuracy', async(req,res)=>{
         }
         let accuracyNum=0
         for(const questionId of questionIds){
-            const question= SocialScience.findById(questionId)
+            const question=await SocialScience.findById(questionId)
             const anticipatedAnswer= question.anticipatedAnswer
             const response= question.response
             if(anticipatedAnswer== response){
@@ -198,7 +200,7 @@ app.post('/computer-accuracy', async(req,res)=>{
         }
         let accuracyNum=0
         for(const questionId of questionIds){
-            const question= ComputerSecurity.findById(questionId)
+            const question=await ComputerSecurity.findById(questionId)
             const anticipatedAnswer= question.anticipatedAnswer
             const response= question.response
             if(anticipatedAnswer== response){

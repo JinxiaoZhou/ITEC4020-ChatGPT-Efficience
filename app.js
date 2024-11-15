@@ -50,7 +50,16 @@ app.get('/history', async(req,res)=>{
         for(const question of randomQuestions){
             const id= question.id
             const startTime = Date.now()
-            const response= await getOpenAIResponse(question.question)
+            let response;
+            try {
+                response = await getOpenAIResponse(question.question);
+            } catch (error) {
+                if (error.response && error.response.status === 429) {
+                    res.status(429).json({ error: 'OpenAI API exceeded its limit.' });
+                } else {
+                    res.status(500).json({ error: `Failed to get an answer for: ${question.question}.` });
+                }
+            }
             const endTime = Date.now()
             const responseTime = endTime - startTime;
             minResponseTime= Math.min(minResponseTime, responseTime)
@@ -59,8 +68,6 @@ app.get('/history', async(req,res)=>{
 
             if(response){
                 await History.findByIdAndUpdate(id, {response: response})
-            }else {
-                res.status(500).json({ error: `Failed to get an answer for:${question.question}。` });
             }
         }
         avgResponseTime= totalResponseTime/num
@@ -86,7 +93,16 @@ app.get('/social-science', async(req,res)=>{
         for(const question of randomQuestions){
             const id= question.id
             const startTime = Date.now()
-            const response= await getOpenAIResponse(question.question)
+            let response;
+            try {
+                response = await getOpenAIResponse(question.question);
+            } catch (error) {
+                if (error.response && error.response.status === 429) {
+                    res.status(429).json({ error: 'OpenAI API exceeded its limit.' });
+                } else {
+                    res.status(500).json({ error: `Failed to get an answer for: ${question.question}.` });
+                }
+            }
             const endTime = Date.now()
             const responseTime = endTime - startTime;
             minResponseTime= Math.min(minResponseTime, responseTime)
@@ -123,7 +139,16 @@ app.get('/computer-security', async(req,res)=>{
         for(const question of randomQuestions){
             const id= question.id
             const startTime = Date.now()
-            const response= await getOpenAIResponse(question.question)
+            let response;
+            try {
+                response = await getOpenAIResponse(question.question);
+            } catch (error) {
+                if (error.response && error.response.status === 429) {
+                    res.status(429).json({ error: 'OpenAI API exceeded its limit.' });
+                } else {
+                    res.status(500).json({ error: `Failed to get an answer for: ${question.question}.` });
+                }
+            }
             const endTime = Date.now()
             const responseTime = endTime - startTime;
             minResponseTime= Math.min(minResponseTime, responseTime)

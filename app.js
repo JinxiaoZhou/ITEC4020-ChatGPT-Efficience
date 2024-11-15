@@ -39,13 +39,13 @@ const getOpenAIResponse=async(question)=>{
 
 app.get('/history', async(req,res)=>{
     try{
-        const questions= await History.find()
+        const randomQuestions= await History.aggregate([{ $sample: { size: 5 } }]);
         const num= questions.length
         let avgResponseTime=0;
         let minResponseTime=Number.MAX_VALUE;
         let maxResponseTime=0;
         let totalResponseTime=0;
-        for(const question of questions){
+        for(const question of randomQuestions){
             const id= question.id
             const startTime = Date.now()
             const response= await getOpenAIResponse(question.question)
@@ -63,6 +63,7 @@ app.get('/history', async(req,res)=>{
         }
         avgResponseTime= totalResponseTime/num
         res.json({
+            questions: randomQuestions,
             avg: avgResponseTime,
             min: minResponseTime,
             max: maxResponseTime
@@ -74,13 +75,13 @@ app.get('/history', async(req,res)=>{
 
 app.get('/social-science', async(req,res)=>{
     try{
-        const questions= await SocialScience.find()
+        const randomQuestions= await SocialScience.aggregate([{ $sample: { size: 5 } }]);
         const num= questions.length
         let avgResponseTime=0;
         let minResponseTime=Number.MAX_VALUE;
         let maxResponseTime=0;
         let totalResponseTime=0;
-        for(const question of questions){
+        for(const question of randomQuestions){
             const id= question.id
             const startTime = Date.now()
             const response= await getOpenAIResponse(question.question)
@@ -98,6 +99,7 @@ app.get('/social-science', async(req,res)=>{
         }
         avgResponseTime= totalResponseTime/num
         res.json({
+            questions: randomQuestions,
             avg: avgResponseTime,
             min: minResponseTime,
             max: maxResponseTime
@@ -110,13 +112,13 @@ app.get('/social-science', async(req,res)=>{
 
 app.get('/computer-security', async(req,res)=>{
     try{
-        const questions= await ComputerSecurity.find()
+        const randomQuestions= await ComputerSecurity.aggregate([{ $sample: { size: 5 } }]);
         const num= questions.length
         let avgResponseTime=0;
         let minResponseTime=Number.MAX_VALUE;
         let maxResponseTime=0;
         let totalResponseTime=0;
-        for(const question of questions){
+        for(const question of randomQuestions){
             const id= question.id
             const startTime = Date.now()
             const response= await getOpenAIResponse(question.question)
@@ -134,6 +136,7 @@ app.get('/computer-security', async(req,res)=>{
         }
         avgResponseTime= totalResponseTime/num
         res.json({
+            questions: randomQuestions,
             avg: avgResponseTime,
             min: minResponseTime,
             max: maxResponseTime
@@ -143,55 +146,67 @@ app.get('/computer-security', async(req,res)=>{
     }
 })
 
-app.get('/history-accuracy', async(req,res)=>{
+app.post('/history-accuracy', async(req,res)=>{
     try {
-        const questions= await History.find()
+        const questionIds = req.body.ids;
+        if(!Array.isArray(questionIds) || questionIds.length==0){
+            return res.status(400).json({ error: 'Invalid input, please provide an array of question IDs.'})
+        }
         let accuracyNum=0
-        for(const question of questions){
+        for(const questionId of questionIds){
+            const question= History.findById(questionId)
             const anticipatedAnswer= question.anticipatedAnswer
             const response= question.response
             if(anticipatedAnswer== response){
                 accuracyNum+=1
             }
         }
-        const accuracyRate= accuracyNum/questions.length
+        const accuracyRate= accuracyNum/questionIds.length
         res.json({ historyAccuracy: accuracyRate }); 
     } catch (error) {
         res.status(500).json({ error: `Something went wrong:${error}` });
     }
 })
 
-app.get('/social-accuracy', async(req,res)=>{
+app.post('/social-accuracy', async(req,res)=>{
     try {
-        const questions= await SocialScience.find()
+        const questionIds = req.body.ids;
+        if(!Array.isArray(questionIds) || questionIds.length==0){
+            return res.status(400).json({ error: 'Invalid input, please provide an array of question IDs.'})
+        }
         let accuracyNum=0
-        for(const question of questions){
+        for(const questionId of questionIds){
+            const question= SocialScience.findById(questionId)
             const anticipatedAnswer= question.anticipatedAnswer
             const response= question.response
             if(anticipatedAnswer== response){
                 accuracyNum+=1
             }
         }
-        const accuracyRate= accuracyNum/questions.length
-        res.json({ socialAccuracy: accuracyRate }); 
+        const accuracyRate= accuracyNum/questionIds.length
+        res.json({ historyAccuracy: accuracyRate }); 
     } catch (error) {
         res.status(500).json({ error: `Something went wrong:${error}` });
     }
 })
 
-app.get('/computer-accuracy', async(req,res)=>{
+app.post('/computer-accuracy', async(req,res)=>{
     try {
-        const questions= await ComputerSecurity.find()
+        const questionIds = req.body.ids;
+        if(!Array.isArray(questionIds) || questionIds.length==0){
+            return res.status(400).json({ error: 'Invalid input, please provide an array of question IDs.'})
+        }
         let accuracyNum=0
-        for(const question of questions){
+        for(const questionId of questionIds){
+            const question= ComputerSecurity.findById(questionId)
             const anticipatedAnswer= question.anticipatedAnswer
             const response= question.response
             if(anticipatedAnswer== response){
                 accuracyNum+=1
             }
         }
-        const accuracyRate= accuracyNum/questions.length
-        res.json({ computerAccuracy: accuracyRate }); 
+        const accuracyRate= accuracyNum/questionIds.length
+        res.json({ historyAccuracy: accuracyRate }); 
     } catch (error) {
         res.status(500).json({ error: `Something went wrong:${error}` });
     }

@@ -14,53 +14,65 @@
   </header>
   <main>
     <section id="introduction">
-      <h2>Introduction</h2>
-      <p>Add an introductory section explaining the purpose of your project, combining both web development and ChatGPT
-        efficiency evaluation.</p>
+      <h2 style="padding: 20px">Introduction</h2>
+      <p>The purpose of this webpage is to show how efficient and accurate ChatGPT is, using questions from social sciences, history and computer security, we asked ChatGPT 150 questions, and
+        tested ChatGPT's accuracy with the result given. </p>
     </section>
-
-    <section id="profile ">
-      <h2>Profile </h2>
-      <ul>
-        <li>
-          <h3>Zijing Wang</h3>
-          <p>SDE Intern @ Tecsys, Prev SDE Co-op @ RBC, CIBC</p>
-          <p>JavaScript, TypeScript, React, Node.JS, Express.JS, MongoDB, Mongoose </p>
+    <hr>
+    <section id="profile">
+      <h2 style="padding-top: 15px;">Profiles</h2>
+      <div id="wzj">
+        <ul>
+          <li>
+            <h3 style="text-align: center;">Zijing Wang</h3>
+            <p>SDE Intern @ Tecsys, Prev SDE Co-op @ RBC, CIBC</p>
+            <p>JavaScript, TypeScript, React, Node.JS, Express.JS, MongoDB, Mongoose </p>
         </li>
-        <li>
-          <h3>Jinxiao Zhou</h3>
-          <p>4th year student from York university</p>
-          <p>HTML, CSS, GitHub</p>
+        </ul>
+      </div>
+      <div id="zjx">
+        <ul>
+          <li>
+            <h3 style="text-align: center;">Jinxiao Zhou</h3>
+            <p>4th year student from York university</p>
+            <p>HTML, CSS, GitHub</p>
         </li>
-        <li>
-          <h3>Michelle McManaman</h3>
+        </ul>
+      </div>
+      <div id="mm">
+        <ul>
+          <li>
+            <h3 style="text-align: center;">Michelle McManaman</h3>
           <p>Senior at York University</p>
           <p>Assisting in any topic that needed help</p>
         </li>
-      </ul>
+        </ul>
+      </div>
     </section>
-
-    <section id="ChatGPT Efficiency Section">
-      <h2>ChatGPT Efficiency Section</h2>
+    <hr>
+    <section id="ChatGPT-Efficiency-Section">
+      <h2 style = "text-align: center; padding-top: 20px">ChatGPT Efficiency / What we are working with</h2>
       <ul>
         <li>
-          <h3>Research Approach</h3>
-          <p>Briefly describe the setup, tools, and technologies used (MongoDB, Node.js, ChatGPT API).</p>
-          <p>MongoDB Atlas: We used on clude MongoDB </p>
-          <p>Mongoose: in order to use MongoDB</p>
-          <p>ChatGPT API</p>
-          <p>Nodemon</p>
-          <p>Node.js</p>
-          <p>Express.js</p>
-          <P></P>
+          <h3 style="text-align: center; padding-bottom: 20px">Research Approach</h3>
+          <ul>
+            <li>
+              <b>Database setup:</b> We used cloud MongoDB to collect dataset for each domain, which is more accessible in this case compared to SQL. Then populated each collection with 50 questions provided, then used the anticipated answers to compare with ChatGPT’s answers.</li>
+            <li><b>Server setup:</b> Utilized Mongoose ODM. It provides existing methods and functions for Node.js. Used Node.js and Express.js for backend servers to manage database and API interactions.</li>
+            <li>Implemented <b>Nodemon app.js</b> that helped developed Node.js based applications by automatically restarting the node application when file changes in the directory are detected.</li>
+            <li><b>API integration:</b> as per requeste, we used <i>ChatGPT’s API</i> to process the questions, returning responses are stored in the cloud MongoDB as well.</li>
+            <li><b>Testing:</b> at last, we tested locally to ensure we entered the correct data and codes for fetching and storing data.</li>
+          </ul>
         </li>
         <li>
-          <h3>Dataset Overview</h3>
-          <p>Include a summary of the dataset used (questions across History, Social Science, and Computer Security) and
-            the purpose of these evaluations.</p>
+          <h3 style="text-align: center; padding: 20px">Dataset Overview</h3>
+          <li>The dataset we used for testing includes 3 field of studies: history, social science, and computer security.</li>
+          <li>With <b>History questions</b>, its nature is primarily analytical and descriptive, focusing past events and their significance. Answering them requires contextual understanding of timelines which emphasizes critical thinking and synthesis, even so, answers are quite similar since it's past events.</li>
+          <li>With <b>Social science</b> questions, its nature is primarily critical and theoretical, it focuses on societies and interactions, answers may vary depending on each perspective or context, it encourages critical reflection and evaluation, which often leads to debates or case studies, that may cause different answers.</li>
+          <li>With <b>Computer security</b> questions, its nature is technical and problem-solving, focusing on protecting systems, networks and data from different types of threat, when answering, it requires precise understanding of the situation, analyzing risks and real-world experiences when solving these questions, thus answering these question may vary because of the questions and situations it describes.</li>
         </li>
         <li>
-          <h3>Results</h3>
+          <h3 style="text-align: center; padding: 15px">Results</h3>
           <table>
             <tr>
               <th>Domain</th>
@@ -101,6 +113,35 @@
 </html>
 
 <style>
+  #introduction h2{
+    text-align: center;
+  }
+  #profile h2{
+    text-align: center;
+  }
+  #profile p{
+    text-align: center;
+  }
+  #profile{
+    width: 100%;
+    height: 200px;
+  }
+  #wzj{
+    width: 33%;
+    float: left;
+    padding-right: 20px;
+  }
+  #zjx{
+    width: 30%;
+    float: left;
+  }
+  #mm{
+    width: 34%;
+    float: right;
+  }
+  #ChatGPT-Efficiency-Section{
+  }
+
   body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -173,7 +214,6 @@
     background-color: #333;
     color: #fff;
     text-align: center;
-    padding: 1rem;
     position: fixed;
     width: 100%;
     bottom: 0;

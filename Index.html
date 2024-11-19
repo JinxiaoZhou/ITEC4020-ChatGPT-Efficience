@@ -4,25 +4,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <title>ITEC 4020</title>
-  <!--<link rel="stylesheet" href="stylesheet.css">-->
+
+  <!--buttons to travel to specific pages-->
+  <div class="w3-top">
+    <div class="w3-row w3-padding w3-black">
+      <div class="w3-col s3">
+        <a href="#backgroundImg" class="w3-button w3-block w3-black">Introduction</a>
+      </div>
+      <div class="w3-col s3">
+        <a href="#profile" class="w3-button w3-block w3-black">Profiles</a>
+      </div>
+      <div class="w3-col s3">
+        <a href="#ChatGPT-Efficiency-Section" class="w3-button w3-block w3-black">Research approach</a>
+      </div>
+      <div class="w3-col s3">
+        <a href="#presentation" class="w3-button w3-block w3-black">Evaluation and visualization</a>
+      </div>
+    </div>
+  </div>
 </head>
 
 <body>
-  <header>
-    <h1>Validate ChatGPT Efficiency</h1>
-  </header>
-  <main>
-    <section id="introduction">
+
+  <!--  image for intro-->
+  <section id="backgroundImg">
+    <img src="ai-vs-people.jpg"/>
+  </section>
+
+  <h2 id="efficiencyText">ChatGPT EFFICIENCY TEST</h2>
+
+
+    <section id="introduction" style="background-color: lightgrey;">
       <h2 style="padding: 20px">Introduction</h2>
       <p>The purpose of this webpage is to show how efficient and accurate ChatGPT is, using questions from social sciences, history and computer security, we asked ChatGPT 150 questions, and
         tested ChatGPT's accuracy with the result given. </p>
     </section>
     <hr>
-    <section id="profile">
+
+    <section id="profile" style="height: 400px">
       <h2 style="padding-top: 15px;">Profiles</h2>
       <div id="wzj">
-        <ul>
+        <img src="avatar.jpg" height="200" width="200"/>
+          <ul>
           <li>
             <h3 style="text-align: center;">Zijing Wang</h3>
             <p>SDE Intern @ Tecsys, Prev SDE Co-op @ RBC, CIBC</p>
@@ -31,6 +56,7 @@
         </ul>
       </div>
       <div id="zjx">
+        <img src="zjxavatar.jpg" height="200" width="200"/>
         <ul>
           <li>
             <h3 style="text-align: center;">Jinxiao Zhou</h3>
@@ -40,17 +66,18 @@
         </ul>
       </div>
       <div id="mm">
+        <img src="mmavatar.jpg" height="200" width="200"/>
         <ul>
           <li>
             <h3 style="text-align: center;">Michelle McManaman</h3>
           <p>Senior at York University</p>
-          <p>Assisting in any topic that needed help</p>
+          <p>HTML, CSS, JavaScript, Node.js, Express.js</p>
         </li>
         </ul>
       </div>
     </section>
     <hr>
-    <section id="ChatGPT-Efficiency-Section">
+    <section id="ChatGPT-Efficiency-Section" style="background-color: lightgrey;">
       <h2 style = "text-align: center; padding-top: 20px">ChatGPT Efficiency / What we are working with</h2>
       <ul>
         <li>
@@ -73,7 +100,43 @@
         </li>
         <hr>
         <li>
-          <h2 style="text-align: center; padding: 15px">Results</h2>
+          <h2 style="text-align: center; padding: 15px;">Results</h2>
+          <button id="triggerButton">Run Process</button>
+          <p id="responseMessage"></p>
+
+          <script>
+            document.getElementById('triggerButton').addEventListener('click', async () => {
+              const responseMessage = document.getElementById('responseMessage');
+              responseMessage.textContent = 'Processing...';
+
+              try {
+                const response = await fetch('http://localhost:3000/trigger-process', {
+                  method: 'POST',
+                });
+                const result = await response.text();
+                responseMessage.textContent = result;
+              } catch (error) {
+                responseMessage.textContent = 'Error occurred while processing.';
+                console.error(error);
+              }
+            });
+            // Tabbed Menu
+            function openMenu(evt, menuName) {
+              var i, x, tablinks;
+              x = document.getElementsByClassName("menu");
+              for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";
+              }
+              tablinks = document.getElementsByClassName("tablink");
+              for (i = 0; i < x.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" w3-dark-grey", "");
+              }
+              document.getElementById(menuName).style.display = "block";
+              evt.currentTarget.firstElementChild.className += " w3-dark-grey";
+            }
+            document.getElementById("myLink").click();
+          </script>
+
           <table>
             <tr>
               <th>Domain</th>
@@ -103,7 +166,7 @@
       </ul>
       <hr>
     </section>
-    <section id="presentation">
+    <section id="presentation" style="background-color: lightgrey;">
       <h2 style="text-align: center; padding: 15px">Evaluation and Visualization</h2>
       <h3 style="text-align: center;">Data Analysis & Key Findings</h3>
       <ul>
@@ -124,7 +187,6 @@
         <li>For <b>Future improvements</b> we thought about using different APIs to test the efficiency and accuracy of questions and answers.</li>
       </ul>
     </section>
-  </main>
   <footer>
     <p>Made by Zijing Wang, Michelle McManaman, Jinxiao Zhou</p>
   </footer>
@@ -133,6 +195,27 @@
 </html>
 
 <style>
+  #backgroundImg img {
+    margin-top: 50px;
+    width: 60%;
+    display: block;
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+  #efficiencyText {
+    position: absolute;
+    top: 66%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: black;
+    font-size: 50px;
+    font-weight: bold;
+    text-shadow: white;
+  }
+  #introduction{
+    padding-bottom: 50px;
+  }
+
   #introduction h2{
     text-align: center;
   }
@@ -145,6 +228,14 @@
   #profile{
     width: 100%;
     height: 200px;
+    padding-bottom: 20px;
+  }
+  img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    border-radius: 50%;
   }
   #wzj{
     width: 33%;
@@ -159,7 +250,27 @@
     width: 34%;
     float: right;
   }
-  #ChatGPT-Efficiency-Section{
+  button{
+    float: right;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+  }
+  #triggerButton{
+    background-color: white;
+    color: black;
+    border: 2px solid black;
+  }
+  #triggerButton:hover{
+    background-color: grey;
+    color: white;
   }
 
   body {
@@ -238,4 +349,3 @@
     width: 100%;
     bottom: 0;
   }
-</style>

@@ -79,7 +79,9 @@
       </ul>
     </div>
   </section>
+
   <hr>
+
   <section id="ChatGPT-Efficiency-Section" style="background-color: lightgrey;">
     <h2 style="text-align: center; padding-top: 20px">ChatGPT Efficiency / What we are working with</h2>
     <ul>
@@ -116,10 +118,12 @@
         the situation, analyzing risks and real-world experiences when solving these questions, thus answering these
         question may vary because of the questions and situations it describes.</li>
       </li>
+
       <hr>
+
       <li>
         <h2 style="text-align: center; padding: 15px;">Results</h2>
-        <button id="triggerButton">Run Process</button>
+        <button id="triggerButton">Run test</button>
         <p id="responseMessage"></p>
 
         <script>
@@ -128,15 +132,37 @@
             responseMessage.textContent = 'Processing...';
 
             try {
-              const response = await fetch('http://localhost:3000/trigger-process', {
-                method: 'POST',
+              const historyResponse = await fetch('https://itec4020p2.onrender.com/history', {
+                method: 'get',
               });
-              const result = await response.text();
-              responseMessage.textContent = result;
+              const historyResult = await historyResponse.json();
+              document.getElementById('historyAvg').textContent = `${historyResult.avg}ms`;
+              document.getElementById('historyMin').textContent = `${historyResult.min}ms`;
+              document.getElementById('historyMax').textContent = `${historyResult.max}ms`;
+
+              const socialScienceResponse = await fetch('https://itec4020p2.onrender.com/social-science', {
+                method: 'get',
+              });
+              const socialScienceResult = await socialScienceResponse.json();
+              document.getElementById('socialScienceAvg').textContent = `${socialScienceResult.avg}ms`;
+              document.getElementById('socialScienceMin').textContent = `${socialScienceResult.min}ms`;
+              document.getElementById('socialScienceMax').textContent = `${socialScienceResult.max}ms`;
+
+              const computerSecurityReponse = await fetch('https://itec4020p2.onrender.com/computer-security', {
+                method: 'get',
+              });
+              const computerSecurityResult = await computerSecurityReponse.json();
+              document.getElementById('computerSecurityAvg').textContent = `${computerSecurityResult.avg}ms`;
+              document.getElementById('computerSecurityMin').textContent = `${computerSecurityResult.min}ms`;
+              document.getElementById('computerSecurityMax').textContent = `${computerSecurityResult.max}ms`;
+
+              responseMessage.textContent = 'Test completed successfully.';
             } catch (error) {
-              responseMessage.textContent = 'Error occurred while processing.';
+              responseMessage.textContent = 'Error occurred while processing.' + error;
               console.error(error);
             }
+
+
           });
           // Tabbed Menu
           function openMenu(evt, menuName) {
@@ -160,29 +186,35 @@
             <th>Domain</th>
             <th>Avg Response Time</th>
             <th>Min Response Time</th>
+            <th>Max Response Time</th>
             <th>Accurate rate</th>
           </tr>
           <tr>
             <td>Histroy</td>
-            <td>510.07ms</td>
-            <td>277ms</td>
-            <td>75%</td>
+            <td id="historyAvg">510.07ms</td>
+            <td id="historyMin">277ms</td>
+            <td id="historyMax">654ms</td>
+            <td id="historyAcc">75%</td>
           </tr>
           <tr>
             <td>Social Science</td>
-            <td>548.03ms</td>
-            <td>364ms</td>
-            <td>80%</td>
+            <td id="socialScienceAvg">548.03ms</td>
+            <td id="socialScienceMin">364ms</td>
+            <td id="socialScienceMax">636ms</td>
+            <td id="socialScienceAcc">80%</td>
           </tr>
           <tr>
             <td>Computer Security</td>
-            <td>495.71ms</td>
-            <td>256ms</td>
-            <td>78.3%</td>
+            <td id="computerSecurityAvg">495.71ms</td>
+            <td id="computerSecurityMin">256ms</td>
+            <td id="computerSecurityMax">612ms</td>
+            <td id="computerSecurityAcc">78.3%</td>
           </tr>
         </table>
     </ul>
+
     <hr>
+
   </section>
   <section id="presentation" style="background-color: lightgrey; padding-bottom: 40px">
     <h2 style="text-align: center; padding: 15px">Evaluation and Visualization</h2>

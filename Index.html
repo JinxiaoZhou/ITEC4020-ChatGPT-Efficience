@@ -24,6 +24,13 @@
       </div>
     </div>
   </div>
+
+  <script>
+    const avgResponseTimes = [510.07, 548.03, 495.71];
+    const minResponseTimes = [277, 364, 256];
+    const maxResponseTimes = [654, 636, 612];
+    const accuracyRates = [75, 80, 78.3];
+  </script>
 </head>
 
 <body>
@@ -131,6 +138,7 @@
             const responseMessage = document.getElementById('responseMessage');
             responseMessage.textContent = 'Processing...';
 
+
             try {
               const historyResponse = await fetch('https://itec4020p2.onrender.com/history', {
                 method: 'get',
@@ -153,7 +161,10 @@
               const historyAccurateResult = await historyAccurateResponse.json();
               document.getElementById('historyAcc').textContent = `${historyAccurateResult.historyAccuracy * 100}%`;
 
-
+              avgResponseTimes[0] = (historyResult.avg);
+              minResponseTimes[0] = (historyResult.min);
+              maxResponseTimes[0] = (historyResult.max);
+              accuracyRates[0] = (historyAccurateResult.historyAccuracy * 100);
 
               const socialScienceResponse = await fetch('https://itec4020p2.onrender.com/social-science', {
                 method: 'get',
@@ -176,7 +187,10 @@
               const socialScienceAccurateResult = await socialScienceAccurateResponse.json();
               document.getElementById('socialScienceAcc').textContent = `${socialScienceAccurateResult.socialAccuracy * 100}%`;
 
-
+              avgResponseTimes[1] = socialScienceResult.avg;
+              minResponseTimes[1] = socialScienceResult.min;
+              maxResponseTimes[1] = socialScienceResult.max;
+              accuracyRates[1] = socialScienceAccurateResult.socialAccuracy * 100;
 
               const computerSecurityReponse = await fetch('https://itec4020p2.onrender.com/computer-security', {
                 method: 'get',
@@ -199,6 +213,9 @@
               const computerSecurityAccurateResult = await computerSecurityAccurateResponse.json();
               document.getElementById('computerSecurityAcc').textContent = `${computerSecurityAccurateResult.computerAccuracy * 100}%`;
 
+              avgResponseTimes[2] = computerSecurityResult.avg;
+              maxResponseTimes[2] = computerSecurityResult.max;
+              accuracyRates[2] = computerSecurityAccurateResult.computerAccuracy * 100;
 
               responseMessage.textContent = 'Test completed successfully.';
             } catch (error) {
@@ -259,6 +276,84 @@
 
     <hr>
 
+    <div id="visualization">
+      <canvas id="responseTimeChart" width="400" height="200"></canvas>
+      <canvas id="accuracyChart" width="400" height="200"></canvas>
+
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script>
+        const responseTimeCtx = document.getElementById('responseTimeChart').getContext('2d');
+        const accuracyCtx = document.getElementById('accuracyChart').getContext('2d');
+
+        const responseTimeChart = new Chart(responseTimeCtx, {
+          type: 'bar',
+          data: {
+            labels: ['History', 'Social Science', 'Computer Security'],
+            datasets: [
+              {
+                label: 'Avg Response Time (ms)',
+                data: [avgResponseTimes[0], avgResponseTimes[1], avgResponseTimes[2]],
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+              },
+              {
+                label: 'Min Response Time (ms)',
+                data: [minResponseTimes[0], minResponseTimes[1], minResponseTimes[2]],
+                backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                borderColor: 'rgba(153, 102, 255, 1)',
+                borderWidth: 1
+              },
+              {
+                label: 'Max Response Time (ms)',
+                data: [maxResponseTimes[0], maxResponseTimes[1], maxResponseTimes[2]],
+                backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                borderColor: 'rgba(255, 159, 64, 1)',
+                borderWidth: 1
+              }
+            ]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+
+        const accuracyChart = new Chart(accuracyCtx, {
+          type: 'bar',
+          data: {
+            labels: ['History', 'Social Science', 'Computer Security'],
+            datasets: [
+              {
+                label: 'Accuracy Rate (%)',
+                data: [accuracyRates[0], accuracyRates[1], accuracyRates[2]],
+                backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)'
+                ],
+                borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)'
+                ],
+                borderWidth: 1
+              }
+            ]
+          },
+          options: {
+            responsive: true
+          }
+        });
+      </script>
+
+    </div>
+
+    <hr>
+
   </section>
   <section id="presentation" style="background-color: lightgrey; padding-bottom: 40px">
     <h2 style="text-align: center; padding: 15px">Evaluation and Visualization</h2>
@@ -288,6 +383,7 @@
         questions and answers.</li>
     </ul>
   </section>
+
   <footer>
     <p>Made by Zijing Wang, Michelle McManaman, Jinxiao Zhou</p>
   </footer>
@@ -368,7 +464,7 @@
     padding: 8px 16px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
+    display: block;
     font-size: 16px;
     margin: 4px 2px;
     transition-duration: 0.4s;

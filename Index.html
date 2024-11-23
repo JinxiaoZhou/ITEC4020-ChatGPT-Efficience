@@ -140,6 +140,21 @@
               document.getElementById('historyMin').textContent = `${historyResult.min}ms`;
               document.getElementById('historyMax').textContent = `${historyResult.max}ms`;
 
+              const historyQID = historyResult.questions.slice(0, 5).map(question => question._id);
+              const historyAccurateResponse = await fetch('https://itec4020p2.onrender.com/history-accuracy', {
+                method: 'post',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  ids: historyQID,
+                }),
+              });
+              const historyAccurateResult = await historyAccurateResponse.json();
+              document.getElementById('historyAcc').textContent = `${historyAccurateResult.historyAccuracy * 100}%`;
+
+
+
               const socialScienceResponse = await fetch('https://itec4020p2.onrender.com/social-science', {
                 method: 'get',
               });
@@ -148,6 +163,21 @@
               document.getElementById('socialScienceMin').textContent = `${socialScienceResult.min}ms`;
               document.getElementById('socialScienceMax').textContent = `${socialScienceResult.max}ms`;
 
+              const socialScienceQID = socialScienceResult.questions.slice(0, 5).map(question => question._id);
+              const socialScienceAccurateResponse = await fetch('https://itec4020p2.onrender.com/social-accuracy', {
+                method: 'post',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  ids: socialScienceQID,
+                }),
+              });
+              const socialScienceAccurateResult = await socialScienceAccurateResponse.json();
+              document.getElementById('socialScienceAcc').textContent = `${socialScienceAccurateResult.socialAccuracy * 100}%`;
+
+
+
               const computerSecurityReponse = await fetch('https://itec4020p2.onrender.com/computer-security', {
                 method: 'get',
               });
@@ -155,6 +185,20 @@
               document.getElementById('computerSecurityAvg').textContent = `${computerSecurityResult.avg}ms`;
               document.getElementById('computerSecurityMin').textContent = `${computerSecurityResult.min}ms`;
               document.getElementById('computerSecurityMax').textContent = `${computerSecurityResult.max}ms`;
+
+              const computerSecurityQID = computerSecurityResult.questions.slice(0, 5).map(question => question._id);
+              const computerSecurityAccurateResponse = await fetch('https://itec4020p2.onrender.com/computer-accuracy', {
+                method: 'post',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  ids: computerSecurityQID,
+                }),
+              });
+              const computerSecurityAccurateResult = await computerSecurityAccurateResponse.json();
+              document.getElementById('computerSecurityAcc').textContent = `${computerSecurityAccurateResult.computerAccuracy * 100}%`;
+
 
               responseMessage.textContent = 'Test completed successfully.';
             } catch (error) {

@@ -211,7 +211,7 @@ app.post('/social-accuracy', async(req,res)=>{
             }
         }
         const accuracyRate= accuracyNum/questionIds.length
-        res.json({ historyAccuracy: accuracyRate }); 
+        res.json({ socialAccuracy: accuracyRate }); 
     } catch (error) {
         res.status(500).json({ error: `Something went wrong:${error}` });
     }
@@ -233,7 +233,7 @@ app.post('/computer-accuracy', async(req,res)=>{
             }
         }
         const accuracyRate= accuracyNum/questionIds.length
-        res.json({ historyAccuracy: accuracyRate }); 
+        res.json({ computerAccuracy: accuracyRate }); 
     } catch (error) {
         res.status(500).json({ error: `Something went wrong:${error}` });
     }

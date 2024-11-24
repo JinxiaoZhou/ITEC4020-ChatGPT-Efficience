@@ -53,10 +53,10 @@
   </section>
   <hr>
 
-  <section id="profile" style="height: 400px">
+  <section id="profile">
     <h2 style="padding-top: 15px;">Profiles</h2>
     <div id="wzj">
-      <img src="avatar.jpg" height="200" width="200" />
+      <img src="avatar.jpg" height=10% width=10% />
       <ul>
         <li>
           <h3 style="text-align: center;">Zijing Wang</h3>
@@ -66,7 +66,7 @@
       </ul>
     </div>
     <div id="zjx">
-      <img src="zjxavatar.jpg" height="200" width="200" />
+      <img src="zjxavatar.jpg" height=10% width=10% />
       <ul>
         <li>
           <h3 style="text-align: center;">Jinxiao Zhou</h3>
@@ -76,7 +76,7 @@
       </ul>
     </div>
     <div id="mm">
-      <img src="mmavatar.jpg" height="200" width="200" />
+      <img src="mmavatar.jpg" height=10% width= />
       <ul>
         <li>
           <h3 style="text-align: center;">Michelle McManaman</h3>
@@ -130,7 +130,7 @@
 
       <li>
         <h2 style="text-align: center; padding: 15px;">Results</h2>
-        <button id="triggerButton">Run test</button>
+        <button id="triggerButton">Run Test</button>
         <p id="responseMessage"></p>
 
         <script>
@@ -140,14 +140,23 @@
 
 
             try {
+              //history
               const historyResponse = await fetch('https://itec4020p2.onrender.com/history', {
                 method: 'get',
               });
               const historyResult = await historyResponse.json();
+              //overwrite the data
               document.getElementById('historyAvg').textContent = `${historyResult.avg}ms`;
               document.getElementById('historyMin').textContent = `${historyResult.min}ms`;
               document.getElementById('historyMax').textContent = `${historyResult.max}ms`;
 
+              //store the questions
+              const historyQ = historyResult.questions.slice(0, 5).map(question => question.question);
+              for (let i = 0; i < historyQ.length; i++) {
+                document.getElementById(`HQ${i + 1}`).textContent = `${i + 1}. ${historyQ[i]}`;
+              }
+
+              //store the question id 
               const historyQID = historyResult.questions.slice(0, 5).map(question => question._id);
               const historyAccurateResponse = await fetch('https://itec4020p2.onrender.com/history-accuracy', {
                 method: 'post',
@@ -160,20 +169,29 @@
               });
               const historyAccurateResult = await historyAccurateResponse.json();
               document.getElementById('historyAcc').textContent = `${historyAccurateResult.historyAccuracy * 100}%`;
-
+              //store the data for the chart
               avgResponseTimes[0] = (historyResult.avg);
               minResponseTimes[0] = (historyResult.min);
               maxResponseTimes[0] = (historyResult.max);
               accuracyRates[0] = (historyAccurateResult.historyAccuracy * 100);
 
+              //social science
               const socialScienceResponse = await fetch('https://itec4020p2.onrender.com/social-science', {
                 method: 'get',
               });
               const socialScienceResult = await socialScienceResponse.json();
+              //overwrite the data
               document.getElementById('socialScienceAvg').textContent = `${socialScienceResult.avg}ms`;
               document.getElementById('socialScienceMin').textContent = `${socialScienceResult.min}ms`;
               document.getElementById('socialScienceMax').textContent = `${socialScienceResult.max}ms`;
 
+              //store the questions
+              const socialScienceQ = socialScienceResult.questions.slice(0, 5).map(question => question.question);
+              for (let i = 0; i < socialScienceQ.length; i++) {
+                document.getElementById(`SQ${i + 1}`).textContent = `${i + 1}. ${socialScienceQ[i]}`;
+              }
+
+              //store the question id
               const socialScienceQID = socialScienceResult.questions.slice(0, 5).map(question => question._id);
               const socialScienceAccurateResponse = await fetch('https://itec4020p2.onrender.com/social-accuracy', {
                 method: 'post',
@@ -186,20 +204,29 @@
               });
               const socialScienceAccurateResult = await socialScienceAccurateResponse.json();
               document.getElementById('socialScienceAcc').textContent = `${socialScienceAccurateResult.socialAccuracy * 100}%`;
-
+              //store the data for the chart
               avgResponseTimes[1] = socialScienceResult.avg;
               minResponseTimes[1] = socialScienceResult.min;
               maxResponseTimes[1] = socialScienceResult.max;
               accuracyRates[1] = socialScienceAccurateResult.socialAccuracy * 100;
 
+              //computer security
               const computerSecurityReponse = await fetch('https://itec4020p2.onrender.com/computer-security', {
                 method: 'get',
               });
               const computerSecurityResult = await computerSecurityReponse.json();
+              //overwrite the data
               document.getElementById('computerSecurityAvg').textContent = `${computerSecurityResult.avg}ms`;
               document.getElementById('computerSecurityMin').textContent = `${computerSecurityResult.min}ms`;
               document.getElementById('computerSecurityMax').textContent = `${computerSecurityResult.max}ms`;
 
+              //store the questions
+              const computerSecurityQ = computerSecurityResult.questions.slice(0, 5).map(question => question.question);
+              for (let i = 0; i < computerSecurityQ.length; i++) {
+                document.getElementById(`CQ${i + 1}`).textContent = `${i + 1}. ${computerSecurityQ[i]}`;
+              }
+
+              //store the question id
               const computerSecurityQID = computerSecurityResult.questions.slice(0, 5).map(question => question._id);
               const computerSecurityAccurateResponse = await fetch('https://itec4020p2.onrender.com/computer-accuracy', {
                 method: 'post',
@@ -212,12 +239,13 @@
               });
               const computerSecurityAccurateResult = await computerSecurityAccurateResponse.json();
               document.getElementById('computerSecurityAcc').textContent = `${computerSecurityAccurateResult.computerAccuracy * 100}%`;
-
+              //store the data for the chart
               avgResponseTimes[2] = computerSecurityResult.avg;
               maxResponseTimes[2] = computerSecurityResult.max;
               accuracyRates[2] = computerSecurityAccurateResult.computerAccuracy * 100;
 
               responseMessage.textContent = 'Test completed successfully.';
+
             } catch (error) {
               responseMessage.textContent = 'Error occurred while processing.' + error;
               console.error(error);
@@ -248,7 +276,7 @@
             <th>Avg Response Time</th>
             <th>Min Response Time</th>
             <th>Max Response Time</th>
-            <th>Accurate rate</th>
+            <th>Accurate Rate</th>
           </tr>
           <tr>
             <td>Histroy</td>
@@ -352,7 +380,87 @@
 
     </div>
 
-    <hr>
+    <div id="sampleQuestions">
+      <h2 style="text-align: center; padding: 15px;">Sample Questions</h2>
+      <div class="w3-row w3-padding w3-black">
+        <div class="w3-col s4">
+          <button class="tablink w3-button w3-block w3-black" onclick="openMenu(event, 'History')">History</button>
+        </div>
+        <div class="w3-col s4">
+          <button class="tablink w3-button w3-block w3-black" onclick="openMenu(event, 'Social Science')">Social
+            Science</button>
+        </div>
+        <div class="w3-col s4">
+          <button class="tablink w3-button w3-block w3-black" onclick="openMenu(event, 'Computer Security')">Computer
+            Security</button>
+        </div>
+      </div>
+
+      <div id="History" class="menu" style="display:none">
+        <h3 style="text-align: center;">History</h3>
+        <table>
+          <tr>
+            <td id="HQ1"></td>
+          </tr>
+          <tr>
+            <td id="HQ2"></td>
+          </tr>
+          <tr>
+            <td id="HQ3"></td>
+          </tr>
+          <tr>
+            <td id="HQ4"></td>
+          </tr>
+          <tr>
+            <td id="HQ5"></td>
+          </tr>
+        </table>
+      </div>
+
+      <div id="Social Science" class="menu" style="display:none">
+        <h3 style="text-align: center;">Social Science</h3>
+        <table>
+          <tr>
+            <td id="SQ1"></td>
+          </tr>
+          <tr>
+            <td id="SQ2"></td>
+          </tr>
+          <tr>
+            <td id="SQ3"></td>
+          </tr>
+          <tr>
+            <td id="SQ4"></td>
+          </tr>
+          <tr>
+            <td id="SQ5"></td>
+          </tr>
+        </table>
+      </div>
+
+      <div id="Computer Security" class="menu" style="display:none">
+        <h3 style="text-align: center;">Computer Security</h3>
+        <table>
+          <tr>
+            <td id="CQ1"></td>
+          </tr>
+          <tr>
+            <td id="CQ2"></td>
+          </tr>
+          <tr>
+            <td id="CQ3"></td>
+          </tr>
+          <tr>
+            <td id="CQ4"></td>
+          </tr>
+          <tr>
+            <td id="CQ5"></td>
+          </tr>
+        </table>
+      </div>
+
+    </div>
+
 
   </section>
   <section id="presentation" style="background-color: lightgrey; padding-bottom: 40px">
@@ -429,7 +537,7 @@
 
   #profile {
     width: 100%;
-    height: 200px;
+    height: 500px;
     padding-bottom: 20px;
   }
 
